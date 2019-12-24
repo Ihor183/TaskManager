@@ -25,4 +25,8 @@ public class UserService {
         user.setUserRole(UserRole.ROLE_USER);
         return userRepository.save(user);
     }
+
+    public User update(User user) {
+        return userRepository.save(user);
+    }
 }
