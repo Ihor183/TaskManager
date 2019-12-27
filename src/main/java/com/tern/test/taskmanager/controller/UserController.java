@@ -12,6 +12,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.stream.Collectors;
 
 @Controller
@@ -79,16 +82,21 @@ public class UserController {
     }
 
     @RequestMapping(value = "/handleTask", method = RequestMethod.POST, params = "mark")
-    public String markCompleted(@RequestParam("passIdInput") String id) {
+    public String markCompleted(@RequestParam("passIdInput") String id, HttpServletRequest request) {
 
         User user = findUser();
         user.getTasks().forEach(t -> {
-            if(t.getId().equals(id))
-                t.setCompleted(true);
+            if(t.getId().equals(id)) {
+                if(t.getCompleted()) {
+                    t.setCompleted(false);
+                } else {
+                    t.setCompleted(true);
+                }
+            }
         });
 
         userService.update(user);
-        return "redirect:/home";
+        return "redirect:/" + getLastViewName(request.getHeader("referer").split("/"));
     }
 
     @RequestMapping(value = "/handleTask", method = RequestMethod.POST, params = "edit")
@@ -103,7 +111,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/handleTask", method = RequestMethod.POST, params = "delete")
-    public String deleteTAsk(@RequestParam("passIdInput") String id) throws Exception {
+    public String deleteTAsk(@RequestParam("passIdInput") String id, HttpServletRequest request) throws Exception {
 
         User user = findUser();
         Task task = user.getTasks().stream().filter(t -> t.getId().equals(id)).findFirst().orElseThrow(Exception::new);
@@ -115,7 +123,20 @@ public class UserController {
 
 
         System.out.println("Delete");
-        return "redirect:/home";
+        return "redirect:/" + getLastViewName(request.getHeader("referer").split("/"));
+    }
+
+    @RequestMapping(value = "/completedTask", method = RequestMethod.GET)
+    public ModelAndView showCompletedTask() {
+        return new ModelAndView("completedTask", "cTasks",
+                findUser().getTasks().stream()
+                        .filter(t -> t.getCompleted().equals(true)
+                                && t.getDeleted().equals(false))
+                        .collect(Collectors.toList()));
+    }
+
+    private String getLastViewName(String[] path) {
+        return path[path.length - 1];
     }
 
     private User findUser() {

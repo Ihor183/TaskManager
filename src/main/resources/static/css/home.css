@@ -5,36 +5,52 @@
 
 body {
     background-color: #d8c5ff;
-    position: relative;
 }
 
-.refresh-add-task {
-    width: 90%;
-    display: flex;
-    justify-content: flex-end;
-    margin: 10px auto 10px auto;
-}
+/*.refresh-add-task {*/
+/*    width: 90%;*/
+/*    display: flex;*/
+/*    justify-content: flex-end;*/
+/*    margin: 10px auto 10px auto;*/
+/*}*/
 
-.refresh-add-task > a {
-    padding-right: 30px;
-    text-decoration: none;
-    font-size: 30px;
-    color: #3e4f5f;
-}
+/*.refresh-add-task > a {*/
+/*    padding-right: 30px;*/
+/*    text-decoration: none;*/
+/*    font-size: 30px;*/
+/*    color: #3e4f5f;*/
+/*}*/
 
 .tasks-container {
     height: fit-content;
-    min-height: 100px;
+    display: flex;
     width: 90%;
     margin: 10px auto 10px auto;
     background-color: #929292b3;
     border-radius: 20px;
 }
 
+.add-task-cell {
+    flex: 1 0 auto;
+    align-self: center;
+}
+
+.add-task-cell > a {
+    margin-left: 20px;
+    text-decoration: none;
+    font-size: 30px;
+    color: #3e4f5f;
+}
+
+.task-data-cell {
+    flex: 25 0 auto;
+}
+
 .task {
+    /*flex: 10 0 auto;*/
     display: flex;
-    font-size: 20px;
-    padding: 5px 20px;
+    font-size: 15px;
+    padding: 5px 20px 5px 0;
 }
 
 .marker, .share, .setting {
@@ -44,7 +60,8 @@ body {
 
 .description {
     flex: 30 0 auto;
-    padding-left: 20px;
+    /*font-family: Arial;*/
+    color: #3e4f5f;
 }
 
 .overlay {
@@ -106,6 +123,10 @@ body {
     -o-transform: translate(-50%, 0);
     transform: translate(-50%, 0);
     top: 20%;
+}
+
+.popup label {
+    color: #383838;
 }
 /* формуємо кнопку закриття */
 .close {

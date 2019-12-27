@@ -8,9 +8,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Task Manager</title>
-
-    <%--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet">--%>
+    <title>Completed task</title>
     <link rel="stylesheet" href="css/home.css">
 </head>
 
@@ -19,13 +17,9 @@
 <div class="page-container">
 
     <div class="tasks-container">
-        <div class="add-task-cell">
-            <a title="Add task" href="#win1"><i class="fas fa-plus"></i></a>
-        </div>
-
-        <div class="task-data-cell">
-            <c:if test="${not empty tasks}">
-                <c:forEach items="${tasks}" var="currentTask">
+        <div class="task-data-cell" style="padding-left: 10px;">
+            <c:if test="${not empty cTasks}">
+                <c:forEach items="${cTasks}" var="currentTask">
                     <div class="task" id="${currentTask.id}">
                         <div class="description">
                                 ${currentTask.task}
@@ -42,28 +36,13 @@
                 </c:forEach>
             </c:if>
         </div>
-
-    </div>
-
-    <a href="#x" class="overlay" id="win1"> </a>
-    <div class="popup">
-        <form id="add-task-form" action="${ContentPath}/addTask" method="post">
-            <label for="taskId">Task Description</label>
-            <input type="text" name="task" id="taskId">
-            <input type="submit" value="Add"/>
-            <input type="hidden" name="${_csrf.parameterName}"
-                   value="${_csrf.token}"/>
-        </form>
-
-        <a class="close" title="Close" href="#close"></a>
     </div>
 
     <a href="#x" class="overlay" id="win2"> </a>
     <div class="popup">
         <form id="task-setting" action="${ContentPath}/handleTask" method="post">
             <input type="text" id="passIdInput" name="passIdInput" value="" hidden>
-            <input type="submit" name="mark" value="Mark as Completed"/>
-            <a href="#win3" onclick="editTask();">Edit</a>
+            <input type="submit" name="mark" value="Make uncompleted"/>\
             <input type="submit" name="delete" value="Delete"/>
             <input type="hidden" name="${_csrf.parameterName}"
                    value="${_csrf.token}"/>
@@ -72,22 +51,8 @@
         <a class="close" title="Close" href="#close"></a>
     </div>
 
-    <a href="#x" class="overlay" id="win3"> </a>
-    <div class="popup">
-        <form id="editTaskForm" action="${ContentPath}/handleTask" method="post">
-            <label for="editTaskId">Task Description</label>
-            <input type="text" id="passIdEdit" name="passIdEdit" value="" hidden>
-            <input type="text" name="editTaskId" id="editTaskId" value="">
-            <input type="submit" name="edit" value="Edit"/>
-            <input type="hidden" id="editFormCSRFInput" name="${_csrf.parameterName}"
-                   value="${_csrf.token}"/>
-        </form>
-
-        <a class="close" title="Close" href="#close"></a>
     </div>
-
-</div>
-<script>
+    <script>
     var taskId;
 
     function handleRequest(element) {
@@ -97,10 +62,6 @@
         $('#passIdInput').attr('value', taskId);
     }
 
-    function editTask() {
-        $('#editTaskId').attr('value', $('#' + taskId).children('.description').text().trim());
-        $('#passIdEdit').attr('value', taskId);
-    }
 </script>
 </body>
 </html>
